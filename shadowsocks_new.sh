@@ -119,30 +119,34 @@ libsodium_installation(){
 	ldconfig
 
 	rm -rf ${libsodium_folder}
+	
 	cat >> /etc/security/limits.conf << EOF
         * soft nofile 512000
         * hard nofile 512000
         EOF
+	
 	ulimit -n 512000
+	
 	cat >> /etc/sysctl.conf << EOF
-fs.file-max = 512000
-net.core.rmem_max = 67108864
-net.core.wmem_max = 67108864
-net.core.netdev_max_backlog = 250000
-net.core.somaxconn = 4096
-net.ipv4.tcp_syncookies = 1
-net.ipv4.tcp_tw_reuse = 1
-net.ipv4.tcp_fin_timeout = 30
-net.ipv4.tcp_keepalive_time = 1200
-net.ipv4.ip_local_port_range = 10000 65000
-net.ipv4.tcp_max_syn_backlog = 8192
-net.ipv4.tcp_max_tw_buckets = 5000
-net.ipv4.tcp_fastopen = 3
-net.ipv4.tcp_rmem = 4096 87380 67108864
-net.ipv4.tcp_wmem = 4096 65536 67108864
-net.ipv4.tcp_mtu_probing = 1
-EOF
-sysctl -p
+        fs.file-max = 512000
+        net.core.rmem_max = 67108864
+        net.core.wmem_max = 67108864
+        net.core.netdev_max_backlog = 250000
+        net.core.somaxconn = 4096
+        net.ipv4.tcp_syncookies = 1
+        net.ipv4.tcp_tw_reuse = 1
+        net.ipv4.tcp_fin_timeout = 30
+        net.ipv4.tcp_keepalive_time = 1200
+        net.ipv4.ip_local_port_range = 10000 65000
+        net.ipv4.tcp_max_syn_backlog = 8192
+        net.ipv4.tcp_max_tw_buckets = 5000
+        net.ipv4.tcp_fastopen = 3
+        net.ipv4.tcp_rmem = 4096 87380 67108864
+        net.ipv4.tcp_wmem = 4096 65536 67108864
+        net.ipv4.tcp_mtu_probing = 1
+        EOF
+	
+        sysctl -p
 
 }
 SSR_dependency_installation(){
@@ -154,6 +158,7 @@ SSR_dependency_installation(){
 		dd if=/dev/zero of=/home/swap bs=1024 count=3072000
 		mkswap /home/swap
 		/sbin/swapon /home/swap
+		
 		cat>>/etc/fstab<<EOF
 		/home/swap swap swap default 0 0
 		EOF
@@ -163,6 +168,7 @@ SSR_dependency_installation(){
 		dd if=/dev/zero of=/home/swap bs=1024 count=3072000
 		mkswap /home/swap
 		/sbin/swapon /home/swap
+		
 		cat>>/etc/fstab<<EOF
 		/home/swap swap swap default 0 0
 		EOF
